@@ -75,16 +75,16 @@ ManifestDPIAware true
 
 Name "${INFO_PRODUCTNAME}"
 OutFile "..\..\bin\${INFO_PROJECTNAME}-${ARCH}-installer.exe" # Name of the installer's file.
-!define REASONIX_DEFAULT_INSTALLDIR "$LOCALAPPDATA\Programs\${INFO_PRODUCTNAME}"
+!define PLEXUS_DEFAULT_INSTALLDIR "$LOCALAPPDATA\Programs\${INFO_PRODUCTNAME}"
 InstallDirRegKey HKCU "${UNINST_KEY}" "InstallLocation" # Reuse the previous install path on update; .onInit falls back to the default on first install.
-InstallDir "${REASONIX_DEFAULT_INSTALLDIR}" # Per-user install location (no admin rights required).
+InstallDir "${PLEXUS_DEFAULT_INSTALLDIR}" # Per-user install location (no admin rights required).
 ShowInstDetails show # This will always show the installation details.
 
 ####
 ## Per-user uninstaller registry (HKCU). Replaces wails.writeUninstaller /
 ## wails.deleteUninstaller, which write HKLM and would fail without admin rights.
 ####
-!macro reasonix.writeUninstaller
+!macro plexus.writeUninstaller
     WriteUninstaller "$INSTDIR\uninstall.exe"
 
     WriteRegStr HKCU "${UNINST_KEY}" "Publisher" "${INFO_COMPANYNAME}"
@@ -106,7 +106,7 @@ ShowInstDetails show # This will always show the installation details.
     WriteRegDWORD HKCU "${UNINST_KEY}" "EstimatedSize" "$0"
 !macroend
 
-!macro reasonix.deleteUninstaller
+!macro plexus.deleteUninstaller
     Delete "$INSTDIR\uninstall.exe"
     DeleteRegKey HKCU "${UNINST_KEY}"
 !macroend
@@ -126,7 +126,7 @@ Function .onInit
    StrCmp $INSTDIR "" fallback done
 
 fallback:
-   StrCpy $INSTDIR "${REASONIX_DEFAULT_INSTALLDIR}"
+   StrCpy $INSTDIR "${PLEXUS_DEFAULT_INSTALLDIR}"
 done:
 FunctionEnd
 
@@ -145,7 +145,7 @@ Section
     !insertmacro wails.associateFiles
     !insertmacro wails.associateCustomProtocols
 
-    !insertmacro reasonix.writeUninstaller
+    !insertmacro plexus.writeUninstaller
 SectionEnd
 
 Section "uninstall"
@@ -162,7 +162,7 @@ Section "uninstall"
     !insertmacro wails.unassociateFiles
     !insertmacro wails.unassociateCustomProtocols
 
-    !insertmacro reasonix.deleteUninstaller
+    !insertmacro plexus.deleteUninstaller
 
     ; Only remove the installation directory if it is empty to prevent data loss
     RMDir $INSTDIR
