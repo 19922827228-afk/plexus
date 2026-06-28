@@ -38,7 +38,7 @@ import (
 // the canary line and a stable build polls latest; the two never cross.
 const (
 	r2Base         = "" // Plexus: no R2 server yet
-	ghReleasesBase = "https://github.com/PlexWeaver/plexus/releases"
+	ghReleasesBase = "https://github.com/19922827228-afk/plexus/releases"
 	httpTimeout    = 15 * time.Second
 )
 
